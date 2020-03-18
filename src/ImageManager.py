@@ -979,7 +979,7 @@ class ImageBackup(Screen):
 				self.commands.append("dd if=/dev/mmcblk0p1 of=%s/boot.bin" % self.WORKDIR)
 				self.commands.append("dd if=/dev/mmcblk0p3 of=%s/rescue.bin" % self.WORKDIR)
 				print('[ImageManager] Stage2: Create: boot dump boot.bin:',self.MODEL)
-				print('[ImageManager] Stage2: Create: rescue dump) rescue.bin:',self.MODEL
+				print('[ImageManager] Stage2: Create: rescue dump) rescue.bin:',self.MODEL)
 		print('[ImageManager] ROOTFSTYPE:',self.ROOTFSTYPE)
 		self.Console.eBatch(self.commands, self.Stage2Complete, debug=False)
 
