@@ -1039,7 +1039,7 @@ class AutoBackupManagerTimer:
 			from Screens.Standby import inStandby
 # Check for querying enabled
 			if not inStandby and config.backupmanager.query.value:
-				message = _("Your STB is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?"))
+				message = _("Your STB is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?")
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:

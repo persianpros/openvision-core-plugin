@@ -175,7 +175,7 @@ class RestoreWizard(WizardLanguage, Rc):
 			print('[RestoreWizard] Backup Image:', imageversion)
 			print('[RestoreWizard] Current Image:', about.getVersionString())
 			if imageversion == about.getVersionString() or isRestorableSettings(imageversion):
-				print('[RestoreWizard] Stage 1: Image ver OK'
+				print('[RestoreWizard] Stage 1: Image ver OK')
 				self.doRestoreSettings2()
 			else:
 				print('[RestoreWizard] Stage 1: Image ver different')
