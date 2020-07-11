@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from __future__ import division
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.Console import Console
