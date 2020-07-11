@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import division
 from Screens.Screen import Screen
 from Screens.Standby import TryQuitMainloop
 from Screens.Console import Console
@@ -60,7 +61,7 @@ class H9SDmanager(Screen):
 			cmdlist.append("mkdir /tmp/mmc")
 			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
 			cmdlist.append("mkdir /tmp/root")
-			cmdlist.append("mount --bind / /tmp/root")
+			cmdlist.append("mount --bind // /tmp/root")
 			cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")
 			cmdlist.append("umount /tmp/root")
 			cmdlist.append("umount /tmp/mmc")
@@ -84,7 +85,7 @@ class H9SDmanager(Screen):
 			cmdlist.append("mkdir /tmp/mmc")
 			cmdlist.append("mount /dev/mmcblk0p1 /tmp/mmc")
 			cmdlist.append("mkdir /tmp/root")
-			cmdlist.append("mount --bind / /tmp/root")
+			cmdlist.append("mount --bind // /tmp/root")
 			cmdlist.append("rsync -aAX /tmp/root/ /tmp/mmc/")
 			cmdlist.append("umount /tmp/root")
 			cmdlist.append("umount /tmp/mmc")
