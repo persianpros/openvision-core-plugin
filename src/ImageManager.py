@@ -910,7 +910,7 @@ class ImageBackup(Screen):
 				JFFS2OPTIONS = " --disable-compressor=lzo -e131072 -l -p125829120"
 			else:
 				JFFS2OPTIONS = " --disable-compressor=lzo --eraseblock=0x20000 -n -l"
-			self.commands.append("mount --bind // %s/root" % self.TMPDIR)
+			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			self.commands.append("mkfs.jffs2 --root=%s/root --faketime --output=%s/rootfs.jffs2 %s" % (self.TMPDIR, self.WORKDIR, JFFS2OPTIONS))
 		elif "ubi" in self.ROOTFSTYPE.split():
 			print("[ImageManager] Stage2: UBIFS Detected.")
@@ -924,7 +924,7 @@ class ImageBackup(Screen):
 				output.write("vol_name=rootfs\n")
 				output.write("vol_flags=autoresize\n")
 
-			self.commands.append("mount --bind // %s/root" % self.TMPDIR)
+			self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if model in ("h9","i55plus"):
 				with open("/proc/cmdline", "r") as z:
 					if SystemInfo["HasMMC"] and "root=/dev/mmcblk0p1" in z.read():
@@ -958,7 +958,7 @@ class ImageBackup(Screen):
 			if SystemInfo["canMultiBoot"]:
 				self.commands.append("mount /dev/%s %s/root" % (self.MTDROOTFS, self.TMPDIR))
 			else:
-				self.commands.append("mount --bind // %s/root" % self.TMPDIR)
+				self.commands.append("mount --bind / %s/root" % self.TMPDIR)
 			if SystemInfo["MultibootStartupDevice"]:
 				self.commands.append("/bin/tar -cf %s/rootfs.tar -C %s/root/%s --exclude ./var/nmbd --exclude ./.resizerootfs --exclude ./.resize-rootfs --exclude ./.resize-linuxrootfs --exclude ./.resize-userdata --exclude ./var/lib/samba/private/msg.sock ." % (self.WORKDIR, self.TMPDIR, self.ROOTFSSUBDIR))
 			else:
