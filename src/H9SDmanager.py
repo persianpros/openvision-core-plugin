@@ -21,17 +21,15 @@ class H9SDmanager(Screen):
 		<widget source="labe14" render="Label" position="2,80" size="730,30" halign="center" font="Regular; 22" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_red" render="Label" position="30,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
 		<widget source="key_green" render="Label" position="200,200" size="150,30" noWrap="1" zPosition="1" valign="center" font="Regular; 20" halign="left" backgroundColor="#00000000" foregroundColor="#00ffffff" />
-		<ePixmap pixmap="buttons/red.png" position="30,200" size="40,40" alphatest="on" />
-		<ePixmap pixmap="buttons/green.png" position="200,200" size="40,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/red.png" position="30,200" size="40,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="200,200" size="40,40" alphatest="on" />
 	</screen>
 	"""
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.skinName = "H9SDmanager"
-		screentitle = _("H9 SDcard manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("H9 SDcard manager"))
 		self.title = screentitle
 		self["labe14"] = StaticText(_("Press appropiate Init to move Nand root to SDcard."))
 		self["key_red"] = StaticText(_("Reboot"))

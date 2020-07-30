@@ -1,10 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from . import _
 from os import mkdir, path, remove, rename, statvfs, system 
 import re
+
 from enigma import eTimer
+
+from . import _
+
 from Components.ActionMap import ActionMap
 from Components.Label import Label
 from Components.ConfigList import ConfigListScreen
@@ -41,7 +44,7 @@ def getProcPartitions(List):
 			if devmajor == "major":
 				continue
 			devMajor = int(devmajor)
-			# print('[MountManager] parts = %s DevMajor = %s' %(parts[0], devMajor,))
+			# print('[MountManager1] parts = %s DevMajor = %s' %(parts[0], devMajor,))
 			if devMajor in blacklistedDisks:									# look at disk & mmc(179)
 				continue
 			if devMajor == 179:
@@ -73,10 +76,10 @@ def buildDeviceList(device, List):
 		device2 = re.sub('[0-9]', '', device)
 	devicetype = path.realpath('/sys/block/' + device2 + '/device')
 
-	# print('[MountManager]device: %s' %device)
-	# print('[MountManager]device2: %s' %device2)
-	# print('[MountManager]devicetype:%s' %devicetype)
-	# print('[MountManager]Type:%s' %SystemInfo["MountManager"])
+	# print('[MountManager1]device: %s' %device)
+	# print('[MountManager1]device2: %s' %device2)
+	# print('[MountManager1]devicetype:%s' %devicetype)
+	# print('[MountManager1]Type:%s' %SystemInfo["MountManager"])
 
 	name = _("HARD DISK: ")
 	if path.exists(resolveFilename(SCOPE_CURRENT_SKIN, "visioncore/dev_hdd.png")):
@@ -164,10 +167,10 @@ def buildDeviceList(device, List):
 class VISIONDevicesPanel(Screen):
 	skin = """
 	<screen position="center,center" size="640,460">
-		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/yellow.png" position="325,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/blue.png" position="475,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="325,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="475,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="325,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -189,9 +192,8 @@ class VISIONDevicesPanel(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Mount manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Mount manager"))
+
 		self['key_red'] = Label(" ")
 		self['key_green'] = Label(_("Setup mounts"))
 		self['key_yellow'] = Label(_("Un-mount"))
@@ -288,7 +290,7 @@ class VISIONDevicesPanel(Screen):
 			parts = sel[1].split()
 			self.device = parts[5]
 			self.mountp = parts[3]
-			# print('[MountManager]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
+			# print('[MountManager1]saveMypoints: device = %s, mountp=%s' %(self.device, self.mountp))
 			self.Console.ePopen('umount ' + self.device)
 			if self.mountp.find('/media/hdd') < 0:
 				self.Console.ePopen('umount /media/hdd')
@@ -300,7 +302,7 @@ class VISIONDevicesPanel(Screen):
 		self.device = extra_args[0]
 		self.mountp = extra_args[1]
 		self.device_uuid = 'UUID=' + result.split('UUID=')[1].split(' ')[0].replace('"', '')
-		# print('[MountManager]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
+		# print('[MountManager1]add_fstab: device = %s, mountp=%s, UUID=%s' %(self.device, self.mountp, self.device_uuid))
 		if not path.exists(self.mountp):
 			mkdir(self.mountp, 0755)
 		open('/etc/fstab.tmp', 'w').writelines([l for l in open('/etc/fstab').readlines() if '/media/hdd' not in l])
@@ -317,8 +319,8 @@ class VISIONDevicesPanel(Screen):
 class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	skin = """
 	<screen position="center,center" size="640,460">
-		<ePixmap pixmap="buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/red.png" position="25,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="175,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="25,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="175,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="config" position="30,60" size="580,275" scrollbarMode="showOnDemand"/>
@@ -329,9 +331,8 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		Screen.__init__(self, session)
 		self.list = []
 		ConfigListScreen.__init__(self, self.list)
-		screentitle =  _("Choose where to mount your devices to:")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Choose where to mount your devices to:"))
+
 		self['key_green'] = Label(_("Save"))
 		self['key_red'] = Label(_("Cancel"))
 		self['Linconn'] = Label()
@@ -371,7 +372,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 	def delay(self, val):
 		message = _("The changes need a system restart to take effect.\nRestart your STB now?")
 		ybox = self.session.openWithCallback(self.restartBox, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restart STB."))
+		ybox.setTitle(_("Restart STB"))
 
 	def add_fstab(self, result=None, retval=None, extra_args=None):
 		# print('[MountManager] RESULT:', result)

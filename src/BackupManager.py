@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from __future__ import print_function
-from . import _, PluginLanguageDomain
-from boxbranding import getImageDistro, getVisionVersion, getVisionRevision
+# for localized messages
+from boxbranding import getImageType, getImageDistro, getImageVersion, getImageBuild, getImageDevBuild
 from os import path, stat, mkdir, listdir, remove, statvfs, chmod
 from time import localtime, time, strftime, mktime
 from datetime import date, datetime
 import tarfile, glob
 from enigma import eTimer, eEnv, eDVBDB, quitMainloop, getBoxType
+from . import _, PluginLanguageDomain
 from Components.About import about
 from Components.ActionMap import ActionMap
 from Components.Button import Button
@@ -89,7 +90,7 @@ def isRestorablePlugins(imageversion):
 
 def isRestorableKernel(kernelversion):
 	# This check should no longer be necessary since auto-installed packages are no longer listed in the plugins backup.
-	# For more information please consult commit https://github.com/OpenVision/vision-core/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
+	# For more information please consult commit https://github.com/OpenVisionE2/openvision-core-plugin/commit/53a95067677651a3f2579a1b0d1f70172ccc493b
 	return True
 	#return kernelversion == about.getKernelVersionString()
 
@@ -112,14 +113,14 @@ def BackupManagerautostart(reason, session=None, **kwargs):
 
 class VISIONBackupManager(Screen):
 	skin = """<screen name="VISIONBackupManager" position="center,center" size="560,400">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
-		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
-		<ePixmap pixmap="buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
+		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
+		<ePixmap pixmap="skin_default/buttons/key_info.png" position="40,40" size="35,25" alphatest="blend" transparent="1" zPosition="3" />
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand" />
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5" />
@@ -130,14 +131,14 @@ class VISIONBackupManager(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle =  _("Backup manager")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Backup manager"))
+
 		self['lab1'] = Label()
 		self["backupstatus"] = Label()
 		self["key_green"] = Button()
 		self["key_yellow"] = Button(_("Restore"))
 		self["key_red"] = Button(_("Delete"))
+
 		self.BackupRunning = False
 		self.BackupDirectory = " "
 		self.onChangedEntry = []
@@ -699,9 +700,9 @@ class VISIONBackupManager(Screen):
 class BackupSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -710,16 +711,17 @@ class BackupSelection(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Select files/folders to backup")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Select files/folders to backup"))
+
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
 		self["key_yellow"] = StaticText()
+
 		self.selectedFiles = config.backupmanager.backupdirs.value
 		defaultDir = '/'
 		self.filelist = MultiFileSelectList(self.selectedFiles, defaultDir)
 		self["checkList"] = self.filelist
+
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
 									{
 									"cancel": self.exit,
@@ -787,9 +789,9 @@ class BackupSelection(Screen):
 class XtraPluginsSelection(Screen):
 	skin = """
 		<screen name="BackupSelection" position="center,center" size="560,400">
-			<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-			<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+			<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
 			<widget source="key_red" render="Label" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 			<widget source="key_green" render="Label" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 			<widget source="key_yellow" render="Label" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -798,14 +800,15 @@ class XtraPluginsSelection(Screen):
 
 	def __init__(self, session):
 		Screen.__init__(self, session)
-		screentitle = _("Select extra packages folder")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Select extra packages folder"))
+
 		self["key_red"] = StaticText(_("Cancel"))
 		self["key_green"] = StaticText(_("Save"))
+
 		defaultDir = config.backupmanager.backuplocation.value
 		self.filelist = FileList(defaultDir, showFiles=True, matchingPattern='^.*.(ipk)')
 		self["checkList"] = self.filelist
+
 		self["actions"] = ActionMap(["DirectionActions", "OkCancelActions", "ShortcutActions", "MenuActions"],
 									{
 									"cancel": self.exit,
@@ -870,10 +873,10 @@ class XtraPluginsSelection(Screen):
 class VISIONBackupManagerMenu(Setup):
 	skin = """
 	<screen name="VISIONBackupManagerMenu" position="center,center" size="560,550">
-		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -890,11 +893,13 @@ class VISIONBackupManagerMenu(Setup):
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Setup.__init__(self, session, setup, plugin, PluginLanguageDomain)
 		self.skinName = "VISIONBackupManagerMenu"
+
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
 									 "yellow": self.chooseFiles,
 									 "blue": self.chooseXtraPluginDir,
 									 }, -2)
+
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("OK"))
 		self["key_yellow"] = Button(_("Choose files"))
@@ -921,9 +926,8 @@ class VISIONBackupManagerLogView(Screen):
 	def __init__(self, session, filename):
 		self.session = session
 		Screen.__init__(self, session)
-		screentitle =  _("Logs")
-		title = screentitle
-		Screen.setTitle(self, title)
+		self.setTitle(_("Logs"))
+
 		self.skinName = "VISIONBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup created') + ': ' + filedate + '\n\n'
@@ -934,6 +938,7 @@ class VISIONBackupManagerLogView(Screen):
 			contents += str(file) + '\n'
 		tar.close()
 		backuplog = backuplog + contents
+
 		self["list"] = ScrollLabel(str(backuplog))
 		self["setupActions"] = ActionMap(["SetupActions", "ColorActions", "DirectionActions", "MenuActions"],
 										 {
@@ -1277,10 +1282,13 @@ class BackupFiles(Screen):
 			backupType = "-SU-"
 		elif self.imagebackup:
 			backupType = "-IM-"
+		imageSubBuild = ""
+		if getImageType() != 'release':
+			imageSubBuild = ".%s" % getImageDevBuild()
 		boxname = ''
 		if config.backupmanager.showboxname.value:
 			boxname = '-' + getBoxType()
-		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + backupType + getVisionVersion() + '-' + getVisionRevision() + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
+		self.Backupfile = self.BackupDirectory + config.backupmanager.folderprefix.value + boxname + '-' + getImageType()[0:3] + backupType + getImageVersion() + '.' + getImageBuild() + imageSubBuild + '-' + backupdate.strftime("%Y%m%d-%H%M") + '.tar.gz'
 # Need to create a list of what to backup, so that spaces and special
 # characters don't get lost on, or mangle, the command line
 #
