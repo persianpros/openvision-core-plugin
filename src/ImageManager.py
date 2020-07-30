@@ -100,15 +100,15 @@ def ImageManagerautostart(reason, session=None, **kwargs):
 
 class VISIONImageManager(Screen):
 	skin = """<screen name="VISIONImageManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
 		<widget name="key_blue" position="420,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#18188b" transparent="1"/>
-		<ePixmap pixmap="skin_default/buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3"/>
+		<ePixmap pixmap="buttons/key_menu.png" position="0,40" size="35,25" alphatest="blend" transparent="1" zPosition="3"/>
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 18" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,260" scrollbarMode="showOnDemand"/>
 		<widget name="backupstatus" position="10,370" size="400,30" font="Regular;20" zPosition="5"/>
@@ -431,7 +431,7 @@ class VISIONImageManager(Screen):
 				MAINDEST = "%s/%s" % (self.TEMPDESTROOT, imagedir)
 				if pathExists("%s/SDAbackup" % MAINDEST) and self.multibootslot != 1:
 						self.session.open(MessageBox, _("Multiboot only able to restore this backup to mmc slot1"), MessageBox.TYPE_INFO, timeout=20)
-						print("[ImageManager] SF8008 mmc restore to SDcard failed:\n",)
+						print("[ImageManager] SF8008 mmc restore to SDcard failed:\n")
 						self.close()
 				else:
 					self.keyRestore6(0)
@@ -638,10 +638,10 @@ class AutoImageManagerTimer:
 class ImageBackup(Screen):
 	skin = """
 	<screen name="VISIONImageManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on"/>
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on"/>
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1"/>
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1"/>
@@ -683,7 +683,7 @@ class ImageBackup(Screen):
 		self.UBINIZE_ARGS = getMachineUBINIZE()
 		self.MKUBIFS_ARGS = getMachineMKUBIFS()
 		self.ROOTFSTYPE = imagefs.strip()
-		self.ROOTFSSUBDIR = "none"
+		self.ROOTFSSUBDIR = "none"	
 		self.EMMCIMG = "none"
 		self.MTDBOOT = "none"
 		if SystemInfo["canBackupEMC"]:
@@ -986,7 +986,7 @@ class ImageBackup(Screen):
 		print("[ImageManager] Stage3: Making eMMC Image.")
 		self.commandMB = []
 		if self.EMMCIMG == "disk.img":
-			print("[ImageManager] hd51/h7: EMMC Detected."  # hd51 receiver with multiple eMMC partitions in class)
+			print("[ImageManager] hd51/h7: EMMC Detected.")  # hd51 receiver with multiple eMMC partitions in class
 			EMMC_IMAGE = "%s/%s" % (self.WORKDIR, self.EMMCIMG)
 			BLOCK_SIZE = 512
 			BLOCK_SECTOR = 2
@@ -1038,7 +1038,7 @@ class ImageBackup(Screen):
 			self.Console.eBatch(self.commandMB, self.Stage3Complete, debug=False)
 
 		elif self.EMMCIMG == "emmc.img":
-			print("[ImageManager] osmio4k: EMMC Detected."  # osmio4k receiver with multiple eMMC partitions in class)
+			print("[ImageManager] osmio4k: EMMC Detected.")  # osmio4k receiver with multiple eMMC partitions in class
 			IMAGE_ROOTFS_ALIGNMENT = 1024
 			BOOT_PARTITION_SIZE = 3072
 			KERNEL_PARTITION_SIZE = 8192
@@ -1217,13 +1217,13 @@ class ImageBackup(Screen):
 			if path.exists("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat"):
 				copy("/usr/lib/enigma2/python/Plugins/SystemPlugins/Vision/burn.bat", self.MAINDESTROOT + "/burn.bat")
 		elif SystemInfo["MultibootStartupDevice"]:
-				with open(self.MAINDEST + "/force_%s_READ.ME" % self.MCBUILD, "w") as fileout:
-					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (self.MCBUILD, self.MCBUILD)
+				with open(self.MAINDEST + "/force_%s_READ.ME" % model, "w") as fileout:
+					line1 = "Rename the unforce_%s.txt to force_%s.txt and move it to the root of your usb-stick" % (model, model)
 					line2 = "When you enter the recovery menu then it will force the image to be installed in the linux selection"
 					fileout.write(line1)
 					fileout.write(line2)
-				with open(self.MAINDEST2 + "/unforce_%s.txt" % self.MCBUILD, "w") as fileout:
-					line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (self.MCBUILD, self.MCBUILD)
+				with open(self.MAINDEST2 + "/unforce_%s.txt" % model, "w") as fileout:
+					line1 = "rename this unforce_%s.txt to force_%s.txt to force an update without confirmation" % (model, model)
 					fileout.write(line1)
 
 		print("[ImageManager] Stage5: Removing Swap.")
@@ -1292,10 +1292,10 @@ class ImageBackup(Screen):
 class ImageManagerDownload(Screen):
 	skin = """
 	<screen name="VISIONImageManager" position="center,center" size="560,400">
-		<ePixmap pixmap="skin_default/buttons/red.png" position="0,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/green.png" position="140,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
-		<ePixmap pixmap="skin_default/buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/red.png" position="0,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/green.png" position="140,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/yellow.png" position="280,0" size="140,40" alphatest="on" />
+		<ePixmap pixmap="buttons/blue.png" position="420,0" size="140,40" alphatest="on" />
 		<widget name="key_red" position="0,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#9f1313" transparent="1" />
 		<widget name="key_green" position="140,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1" />
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#a08500" transparent="1" />
@@ -1350,9 +1350,8 @@ class ImageManagerDownload(Screen):
 		self.imagesList = {}
 		self.jsonlist = {}
 		list = []
-		self.boxtype = model
 		imagecat = [6.4]
-		self.urlBox = path.join(self.urlDistro, self.boxtype, "")
+		self.urlBox = path.join(self.urlDistro, model, "")
 
 		if "www.openvix" in self.urlDistro:
 			imagecat = [5.3, 5.4]
@@ -1380,7 +1379,7 @@ class ImageManagerDownload(Screen):
 						if "%s" % version in image:
 							self.imagesList[newversion][image] = {}
 							self.imagesList[newversion][image]["name"] = image
-							self.imagesList[newversion][image]["link"] = "%s/%s/%s" % (self.urlDistro, self.boxtype, image)
+							self.imagesList[newversion][image]["link"] = "%s/%s/%s" % (self.urlDistro, model, image)
 
 		if self.Pli and not self.imagesList:
 			if not self.jsonlist:
@@ -1388,7 +1387,7 @@ class ImageManagerDownload(Screen):
 					urljson = path.join(self.urlDistro, model)
 					self.jsonlist = dict(json.load(urlopen("%s" % urljson)))
 				except Exception:
-					print("[ImageManager] no model: %s in downloads" % model)
+					print("[ImageManager] No model: %s in downloads" % model)
 					return
 			self.imagesList = self.jsonlist
 		if self.Pli and not self.jsonlist and not self.imagesList:
