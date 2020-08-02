@@ -18,8 +18,6 @@ class RestoreWizard(WizardLanguage, Rc):
 		WizardLanguage.__init__(self, session, showSteps=False, showStepSlider=False)
 		Rc.__init__(self)
 		self.session = session
-		self.skinName = "StartWizard"
-		self.skin = "StartWizard.skin"
 		self["wizard"] = Pixmap()
 		self.selectedAction = None
 		self.NextStep = None

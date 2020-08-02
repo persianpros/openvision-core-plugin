@@ -29,9 +29,6 @@ class VISIONIPKInstaller(Screen):
 		<widget name="key_yellow" position="280,0" zPosition="1" size="140,40" font="Regular;20" halign="center" valign="center" backgroundColor="#1f771f" transparent="1"/>
 		<widget name="lab1" position="0,50" size="560,50" font="Regular; 20" zPosition="2" transparent="0" halign="center"/>
 		<widget name="list" position="10,105" size="540,300" scrollbarMode="showOnDemand"/>
-		<applet type="onLayoutFinish">
-			self["list"].instance.setItemHeight(25)
-		</applet>
 	</screen>"""
 
 	def __init__(self, session):

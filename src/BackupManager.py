@@ -362,7 +362,7 @@ class VISIONBackupManager(Screen):
 	def keyResstore1(self):
 		message = _("Are you sure you want to restore this backup:\n ") + self.sel
 		ybox = self.session.openWithCallback(self.doRestore, MessageBox, message, MessageBox.TYPE_YESNO)
-		ybox.setTitle(_("Restore Confirmation"))
+		ybox.setTitle(_("Restore confirmation"))
 
 	def doRestore(self, answer):
 		if answer is True:
@@ -895,9 +895,7 @@ class VISIONBackupManagerMenu(Screen):
 
 	def __init__(self, session, setup, plugin=None, PluginLanguageDomain=None):
 		Screen.__init__(self, session, setup)
-		self.setup_title = _("Vision BackupManager Menu")
-		self.setTitle(self.setup_title)
-		self.skinName = "VISIONBackupManagerMenu"
+		self.setTitle(_("Backup manager"))
 
 		self["actions2"] = ActionMap(["SetupActions", 'ColorActions', 'VirtualKeyboardActions', "MenuActions"],
 									 {
@@ -935,7 +933,6 @@ class VISIONBackupManagerLogView(Screen):
 		Screen.__init__(self, session)
 		self.setTitle(_("Logs"))
 
-		self.skinName = "VISIONBackupManagerLogView"
 		filedate = str(date.fromtimestamp(stat(filename).st_mtime))
 		backuplog = _('Backup created') + ': ' + filedate + '\n\n'
 		tar = tarfile.open(filename, "r")
