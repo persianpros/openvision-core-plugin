@@ -538,7 +538,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: No network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your STB is not connected to a network. Please check your network settings and try again."),
+								 _("Your receiver is not connected to a network. Please check your network settings and try again."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
@@ -556,7 +556,7 @@ class VISIONBackupManager(Screen):
 			print('[BackupManager] Restoring Stage 3: no network connection, plugin restore not possible')
 			self.kernelcheck = False
 			AddPopupWithCallback(self.Stage6,
-								 _("Your STB is not connected to the Internet. Please check your network settings and try again."),
+								 _("Your receiver is not connected to the Internet. Please check your network settings and try again."),
 								 MessageBox.TYPE_INFO,
 								 15,
 								 NOPLUGINS
@@ -1036,7 +1036,7 @@ class AutoBackupManagerTimer:
 			from Screens.Standby import inStandby
 # Check for querying enabled
 			if not inStandby and config.backupmanager.query.value:
-				message = _("Your STB is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?")
+				message = _("Your receiver is about to run a backup of your settings and to detect your plugins.\nDo you want to allow this?")
 				ybox = self.session.openWithCallback(self.doBackup, MessageBox, message, MessageBox.TYPE_YESNO, timeout=30)
 				ybox.setTitle('Scheduled backup.')
 			else:

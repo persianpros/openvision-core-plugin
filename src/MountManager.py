@@ -343,7 +343,7 @@ class VISIONDevicePanelConf(Screen, ConfigListScreen):
 		self.updateList()
 
 	def updateList(self, result=None, retval=None, extra_args=None):
-		scanning = _("Please wait while scanning your STB devices...")
+		scanning = _("Please wait while scanning your receiver devices...")
 		self['Linconn'].setText(scanning)
 		self.activityTimer.start(10)
 
