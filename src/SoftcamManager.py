@@ -560,7 +560,7 @@ class SoftcamAutoPoller:
 					if path.exists('/tmp/SoftcamsScriptsRunning'):
 						data = open('/tmp/SoftcamsScriptsRunning').read()
 						if data.find(softcamcheck) < 0:
-							open('/tmp/SoftcamsScriptsRunning', 'a').write(softcamcheck + '\n)
+							open('/tmp/SoftcamsScriptsRunning', 'a').write(softcamcheck + '\n')
 							print('[SoftcamManager] Starting ' + softcamcheck)
 							self.Console.ePopen('/usr/softcams/' + softcamcheck + ' start')
 					else:
